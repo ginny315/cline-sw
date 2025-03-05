@@ -14,6 +14,7 @@ import { DeepSeekHandler } from "./providers/deepseek"
 import { RequestyHandler } from "./providers/requesty"
 import { TogetherHandler } from "./providers/together"
 import { QwenHandler } from "./providers/qwen"
+import { SWAIHandler } from "./providers/swai"
 import { MistralHandler } from "./providers/mistral"
 import { VsCodeLmHandler } from "./providers/vscode-lm"
 import { LiteLlmHandler } from "./providers/litellm"
@@ -58,6 +59,8 @@ export function buildApiHandler(configuration: ApiConfiguration): ApiHandler {
 			return new TogetherHandler(options)
 		case "qwen":
 			return new QwenHandler(options)
+		case "swai":
+			return new SWAIHandler(options)
 		case "mistral":
 			return new MistralHandler(options)
 		case "vscode-lm":

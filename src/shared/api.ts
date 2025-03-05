@@ -12,6 +12,7 @@ export type ApiProvider =
 	| "together"
 	| "deepseek"
 	| "qwen"
+	| "swai"
 	| "mistral"
 	| "vscode-lm"
 	| "litellm"
@@ -55,6 +56,7 @@ export interface ApiHandlerOptions {
 	togetherApiKey?: string
 	togetherModelId?: string
 	qwenApiKey?: string
+	swaiApiKey?: string
 	mistralApiKey?: string
 	azureApiVersion?: string
 	vsCodeLmModelSelector?: any
@@ -791,6 +793,25 @@ export const qwenModels = {
 		cacheReadsPrice: 4.5,
 	},
 } as const satisfies Record<string, ModelInfo>
+
+
+// SWAI
+// https://bailian.console.aliyun.com/
+export type SWAIModelId = keyof typeof swaiModels
+export const swaiDefaultModelId: SWAIModelId = "deepseek-ai/DeepSeek-R1"
+export const swaiModels = {
+	"deepseek-ai/DeepSeek-R1": {
+		maxTokens: 8_192,
+		contextWindow: 131_072,
+		supportsImages: false,
+		supportsPromptCache: false,
+		inputPrice: 0.002,
+		outputPrice: 0.006,
+		cacheWritesPrice: 0.002,
+		cacheReadsPrice: 0.006,
+	},
+} as const satisfies Record<string, ModelInfo>
+
 
 // Mistral
 // https://docs.mistral.ai/getting-started/models/models_overview/

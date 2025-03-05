@@ -34,6 +34,8 @@ import {
 	openRouterDefaultModelInfo,
 	qwenDefaultModelId,
 	qwenModels,
+	swaiDefaultModelId,
+	swaiModels,
 	vertexDefaultModelId,
 	vertexModels,
 	askSageModels,
@@ -185,6 +187,7 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage, is
 						minWidth: 130,
 						position: "relative",
 					}}>
+					<VSCodeOption value="swai">SWAI</VSCodeOption>
 					<VSCodeOption value="openrouter">OpenRouter</VSCodeOption>
 					<VSCodeOption value="anthropic">Anthropic</VSCodeOption>
 					<VSCodeOption value="bedrock">AWS Bedrock</VSCodeOption>
@@ -348,6 +351,37 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage, is
 									fontSize: "inherit",
 								}}>
 								You can get a DeepSeek API key by signing up here.
+							</VSCodeLink>
+						)}
+					</p>
+				</div>
+			)}
+
+			{selectedProvider === "swai" && (
+				<div>
+					<VSCodeTextField
+						value={apiConfiguration?.swaiApiKey || ""}
+						style={{ width: "100%" }}
+						type="password"
+						onInput={handleInputChange("swaiApiKey")}
+						placeholder="Enter API Key...">
+						<span style={{ fontWeight: 500 }}>SWAI API Key</span>
+					</VSCodeTextField>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: 3,
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						This key is stored locally and only used to make API requests from this extension.
+						{!apiConfiguration?.deepSeekApiKey && (
+							<VSCodeLink
+								href="http://ai.thuwaytec.com/"
+								style={{
+									display: "inline",
+									fontSize: "inherit",
+								}}>
+								You can get a SWAI API key by signing up here.
 							</VSCodeLink>
 						)}
 					</p>
@@ -1255,6 +1289,7 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage, is
 							{selectedProvider === "openai-native" && createDropdown(openAiNativeModels)}
 							{selectedProvider === "deepseek" && createDropdown(deepSeekModels)}
 							{selectedProvider === "qwen" && createDropdown(qwenModels)}
+							{selectedProvider === "swai" && createDropdown(swaiModels)}
 							{selectedProvider === "mistral" && createDropdown(mistralModels)}
 							{selectedProvider === "asksage" && createDropdown(askSageModels)}
 							{selectedProvider === "xai" && createDropdown(xaiModels)}
@@ -1472,6 +1507,8 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration): 
 			return getProviderData(deepSeekModels, deepSeekDefaultModelId)
 		case "qwen":
 			return getProviderData(qwenModels, qwenDefaultModelId)
+		case "swai":
+			return getProviderData(swaiModels, swaiDefaultModelId)
 		case "mistral":
 			return getProviderData(mistralModels, mistralDefaultModelId)
 		case "asksage":

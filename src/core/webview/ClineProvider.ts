@@ -55,6 +55,7 @@ type SecretKey =
 	| "requestyApiKey"
 	| "togetherApiKey"
 	| "qwenApiKey"
+	| "swaiApiKey"
 	| "mistralApiKey"
 	| "liteLlmApiKey"
 	| "authToken"
@@ -592,6 +593,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 								togetherApiKey,
 								togetherModelId,
 								qwenApiKey,
+								swaiApiKey,
 								mistralApiKey,
 								azureApiVersion,
 								openRouterModelId,
@@ -636,6 +638,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							await this.storeSecret("requestyApiKey", requestyApiKey)
 							await this.storeSecret("togetherApiKey", togetherApiKey)
 							await this.storeSecret("qwenApiKey", qwenApiKey)
+							await this.storeSecret("swaiApiKey", swaiApiKey)
 							await this.storeSecret("mistralApiKey", mistralApiKey)
 							await this.storeSecret("liteLlmApiKey", liteLlmApiKey)
 							await this.storeSecret("xaiApiKey", xaiApiKey)
@@ -1895,6 +1898,7 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			togetherApiKey,
 			togetherModelId,
 			qwenApiKey,
+			swaiApiKey,
 			mistralApiKey,
 			azureApiVersion,
 			openRouterModelId,
@@ -1954,6 +1958,7 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			this.getSecret("togetherApiKey") as Promise<string | undefined>,
 			this.getGlobalState("togetherModelId") as Promise<string | undefined>,
 			this.getSecret("qwenApiKey") as Promise<string | undefined>,
+			this.getSecret("swaiApiKey") as Promise<string | undefined>,
 			this.getSecret("mistralApiKey") as Promise<string | undefined>,
 			this.getGlobalState("azureApiVersion") as Promise<string | undefined>,
 			this.getGlobalState("openRouterModelId") as Promise<string | undefined>,
@@ -2037,6 +2042,7 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 				togetherModelId,
 				qwenApiKey,
 				qwenApiLine,
+				swaiApiKey,
 				mistralApiKey,
 				azureApiVersion,
 				openRouterModelId,
@@ -2191,6 +2197,7 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			"requestyApiKey",
 			"togetherApiKey",
 			"qwenApiKey",
+			"swaiApiKey",
 			"mistralApiKey",
 			"liteLlmApiKey",
 			"authToken",
