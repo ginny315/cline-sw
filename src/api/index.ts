@@ -10,7 +10,6 @@ import { ApiStream } from "./transform/stream"
 import { DeepSeekHandler } from "./providers/deepseek"
 import { QwenHandler } from "./providers/qwen"
 import { SWAIHandler } from "./providers/swai"
-import { MistralHandler } from "./providers/mistral"
 import { VsCodeLmHandler } from "./providers/vscode-lm"
 import { LiteLlmHandler } from "./providers/litellm"
 
@@ -44,8 +43,6 @@ export function buildApiHandler(configuration: ApiConfiguration): ApiHandler {
 			return new QwenHandler(options)
 		case "swai":
 			return new SWAIHandler(options)
-		case "mistral":
-			return new MistralHandler(options)
 		case "vscode-lm":
 			return new VsCodeLmHandler(options)
 		case "litellm":

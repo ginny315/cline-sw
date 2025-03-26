@@ -8,7 +8,6 @@ export type ApiProvider =
 	| "deepseek"
 	| "qwen"
 	| "swai"
-	| "mistral"
 	| "vscode-lm"
 	| "litellm"
 
@@ -42,7 +41,6 @@ export interface ApiHandlerOptions {
 	deepSeekApiKey?: string
 	qwenApiKey?: string
 	swaiApiKey?: string
-	mistralApiKey?: string
 	azureApiVersion?: string
 	vsCodeLmModelSelector?: any
 	o3MiniReasoningEffort?: string
@@ -478,86 +476,6 @@ export const swaiModels = {
 		outputPrice: 0.006,
 		cacheWritesPrice: 0.002,
 		cacheReadsPrice: 0.006,
-	},
-} as const satisfies Record<string, ModelInfo>
-
-
-// Mistral
-// https://docs.mistral.ai/getting-started/models/models_overview/
-export type MistralModelId = keyof typeof mistralModels
-export const mistralDefaultModelId: MistralModelId = "codestral-2501"
-export const mistralModels = {
-	"mistral-large-2411": {
-		maxTokens: 131_000,
-		contextWindow: 131_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 6.0,
-	},
-	"pixtral-large-2411": {
-		maxTokens: 131_000,
-		contextWindow: 131_000,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 6.0,
-	},
-	"ministral-3b-2410": {
-		maxTokens: 131_000,
-		contextWindow: 131_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.04,
-		outputPrice: 0.04,
-	},
-	"ministral-8b-2410": {
-		maxTokens: 131_000,
-		contextWindow: 131_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.1,
-		outputPrice: 0.1,
-	},
-	"mistral-small-2501": {
-		maxTokens: 32_000,
-		contextWindow: 32_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.1,
-		outputPrice: 0.3,
-	},
-	"pixtral-12b-2409": {
-		maxTokens: 131_000,
-		contextWindow: 131_000,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 0.15,
-		outputPrice: 0.15,
-	},
-	"open-mistral-nemo-2407": {
-		maxTokens: 131_000,
-		contextWindow: 131_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.15,
-		outputPrice: 0.15,
-	},
-	"open-codestral-mamba": {
-		maxTokens: 256_000,
-		contextWindow: 256_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.15,
-		outputPrice: 0.15,
-	},
-	"codestral-2501": {
-		maxTokens: 256_000,
-		contextWindow: 256_000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.3,
-		outputPrice: 0.9,
 	},
 } as const satisfies Record<string, ModelInfo>
 

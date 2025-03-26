@@ -20,8 +20,6 @@ import {
 	azureOpenAiDefaultApiVersion,
 	deepSeekDefaultModelId,
 	deepSeekModels,
-	mistralDefaultModelId,
-	mistralModels,
 	ModelInfo,
 	openAiModelInfoSaneDefaults,
 	openAiNativeDefaultModelId,
@@ -635,8 +633,6 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration): 
 			return getProviderData(qwenModels, qwenDefaultModelId)
 		case "swai":
 			return getProviderData(swaiModels, swaiDefaultModelId)
-		case "mistral":
-			return getProviderData(mistralModels, mistralDefaultModelId)
 		case "openrouter":
 			return {
 				selectedProvider: provider,

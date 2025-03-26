@@ -53,7 +53,6 @@ type SecretKey =
 	| "deepSeekApiKey"
 	| "qwenApiKey"
 	| "swaiApiKey"
-	| "mistralApiKey"
 	| "liteLlmApiKey"
 	| "authToken"
 	| "authNonce"
@@ -575,7 +574,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 								deepSeekApiKey,
 								qwenApiKey,
 								swaiApiKey,
-								mistralApiKey,
 								azureApiVersion,
 								openRouterModelId,
 								openRouterModelInfo,
@@ -611,7 +609,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							await this.storeSecret("deepSeekApiKey", deepSeekApiKey)
 							await this.storeSecret("qwenApiKey", qwenApiKey)
 							await this.storeSecret("swaiApiKey", swaiApiKey)
-							await this.storeSecret("mistralApiKey", mistralApiKey)
 							await this.storeSecret("liteLlmApiKey", liteLlmApiKey)
 							await this.updateGlobalState("azureApiVersion", azureApiVersion)
 							await this.updateGlobalState("openRouterModelId", openRouterModelId)
@@ -1840,7 +1837,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			deepSeekApiKey,
 			qwenApiKey,
 			swaiApiKey,
-			mistralApiKey,
 			azureApiVersion,
 			openRouterModelId,
 			openRouterModelInfo,
@@ -1889,7 +1885,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			this.getSecret("deepSeekApiKey") as Promise<string | undefined>,
 			this.getSecret("qwenApiKey") as Promise<string | undefined>,
 			this.getSecret("swaiApiKey") as Promise<string | undefined>,
-			this.getSecret("mistralApiKey") as Promise<string | undefined>,
 			this.getGlobalState("azureApiVersion") as Promise<string | undefined>,
 			this.getGlobalState("openRouterModelId") as Promise<string | undefined>,
 			this.getGlobalState("openRouterModelInfo") as Promise<ModelInfo | undefined>,
@@ -1961,7 +1956,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 				qwenApiKey,
 				qwenApiLine,
 				swaiApiKey,
-				mistralApiKey,
 				azureApiVersion,
 				openRouterModelId,
 				openRouterModelInfo,
@@ -2110,7 +2104,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			"deepSeekApiKey",
 			"qwenApiKey",
 			"swaiApiKey",
-			"mistralApiKey",
 			"liteLlmApiKey",
 			"authToken",
 		]
