@@ -66,21 +66,16 @@ export const ExtensionStateContextProvider: React.FC<{
 							config.apiKey,
 							config.openRouterApiKey,
 							config.awsRegion,
-							config.vertexProjectId,
 							config.openAiApiKey,
 							config.ollamaModelId,
 							config.lmStudioModelId,
 							config.liteLlmApiKey,
 							config.openAiNativeApiKey,
 							config.deepSeekApiKey,
-							config.requestyApiKey,
-							config.togetherApiKey,
 							config.qwenApiKey,
 							config.swaiApiKey,
 							config.mistralApiKey,
 							config.vsCodeLmModelSelector,
-							config.asksageApiKey,
-							config.xaiApiKey,
 						].some((key) => key !== undefined)
 					: false
 				setShowWelcome(!hasKey)

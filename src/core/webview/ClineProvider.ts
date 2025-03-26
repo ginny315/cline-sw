@@ -51,26 +51,19 @@ type SecretKey =
 	| "openAiApiKey"
 	| "openAiNativeApiKey"
 	| "deepSeekApiKey"
-	| "requestyApiKey"
-	| "togetherApiKey"
 	| "qwenApiKey"
 	| "swaiApiKey"
 	| "mistralApiKey"
 	| "liteLlmApiKey"
 	| "authToken"
 	| "authNonce"
-	| "asksageApiKey"
-	| "xaiApiKey"
 type GlobalStateKey =
 	| "apiProvider"
 	| "apiModelId"
 	| "awsRegion"
 	| "awsUseCrossRegionInference"
-	| "awsBedrockUsePromptCache"
 	| "awsProfile"
 	| "awsUseProfile"
-	| "vertexProjectId"
-	| "vertexRegion"
 	| "lastShownAnnouncementId"
 	| "customInstructions"
 	| "taskHistory"
@@ -98,11 +91,8 @@ type GlobalStateKey =
 	| "liteLlmBaseUrl"
 	| "liteLlmModelId"
 	| "qwenApiLine"
-	| "requestyModelId"
-	| "togetherModelId"
 	| "mcpMarketplaceCatalog"
 	| "telemetrySetting"
-	| "asksageApiUrl"
 	| "thinkingBudgetTokens"
 
 export const GlobalFileNames = {
@@ -569,11 +559,8 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 								awsSessionToken,
 								awsRegion,
 								awsUseCrossRegionInference,
-								awsBedrockUsePromptCache,
 								awsProfile,
 								awsUseProfile,
-								vertexProjectId,
-								vertexRegion,
 								openAiBaseUrl,
 								openAiApiKey,
 								openAiModelId,
@@ -586,10 +573,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 								anthropicBaseUrl,
 								openAiNativeApiKey,
 								deepSeekApiKey,
-								requestyApiKey,
-								requestyModelId,
-								togetherApiKey,
-								togetherModelId,
 								qwenApiKey,
 								swaiApiKey,
 								mistralApiKey,
@@ -601,9 +584,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 								liteLlmModelId,
 								liteLlmApiKey,
 								qwenApiLine,
-								asksageApiKey,
-								asksageApiUrl,
-								xaiApiKey,
 								thinkingBudgetTokens,
 							} = message.apiConfiguration
 							await this.updateGlobalState("apiProvider", apiProvider)
@@ -615,11 +595,8 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							await this.storeSecret("awsSessionToken", awsSessionToken)
 							await this.updateGlobalState("awsRegion", awsRegion)
 							await this.updateGlobalState("awsUseCrossRegionInference", awsUseCrossRegionInference)
-							await this.updateGlobalState("awsBedrockUsePromptCache", awsBedrockUsePromptCache)
 							await this.updateGlobalState("awsProfile", awsProfile)
 							await this.updateGlobalState("awsUseProfile", awsUseProfile)
-							await this.updateGlobalState("vertexProjectId", vertexProjectId)
-							await this.updateGlobalState("vertexRegion", vertexRegion)
 							await this.updateGlobalState("openAiBaseUrl", openAiBaseUrl)
 							await this.storeSecret("openAiApiKey", openAiApiKey)
 							await this.updateGlobalState("openAiModelId", openAiModelId)
@@ -632,13 +609,10 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							await this.updateGlobalState("anthropicBaseUrl", anthropicBaseUrl)
 							await this.storeSecret("openAiNativeApiKey", openAiNativeApiKey)
 							await this.storeSecret("deepSeekApiKey", deepSeekApiKey)
-							await this.storeSecret("requestyApiKey", requestyApiKey)
-							await this.storeSecret("togetherApiKey", togetherApiKey)
 							await this.storeSecret("qwenApiKey", qwenApiKey)
 							await this.storeSecret("swaiApiKey", swaiApiKey)
 							await this.storeSecret("mistralApiKey", mistralApiKey)
 							await this.storeSecret("liteLlmApiKey", liteLlmApiKey)
-							await this.storeSecret("xaiApiKey", xaiApiKey)
 							await this.updateGlobalState("azureApiVersion", azureApiVersion)
 							await this.updateGlobalState("openRouterModelId", openRouterModelId)
 							await this.updateGlobalState("openRouterModelInfo", openRouterModelInfo)
@@ -646,10 +620,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							await this.updateGlobalState("liteLlmBaseUrl", liteLlmBaseUrl)
 							await this.updateGlobalState("liteLlmModelId", liteLlmModelId)
 							await this.updateGlobalState("qwenApiLine", qwenApiLine)
-							await this.updateGlobalState("requestyModelId", requestyModelId)
-							await this.updateGlobalState("togetherModelId", togetherModelId)
-							await this.storeSecret("asksageApiKey", asksageApiKey)
-							await this.updateGlobalState("asksageApiUrl", asksageApiUrl)
 							await this.updateGlobalState("thinkingBudgetTokens", thinkingBudgetTokens)
 							if (this.cline) {
 								this.cline.api = buildApiHandler(message.apiConfiguration)
@@ -1014,11 +984,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		await this.updateGlobalState("previousModeThinkingBudgetTokens", apiConfiguration.thinkingBudgetTokens)
 		switch (apiConfiguration.apiProvider) {
 			case "anthropic":
-			case "bedrock":
-			case "vertex":
-			case "asksage":
-				await this.updateGlobalState("previousModeModelId", apiConfiguration.apiModelId)
-				break
 			case "openrouter":
 				await this.updateGlobalState("previousModeModelId", apiConfiguration.openRouterModelId)
 				await this.updateGlobalState("previousModeModelInfo", apiConfiguration.openRouterModelInfo)
@@ -1039,9 +1004,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			case "litellm":
 				await this.updateGlobalState("previousModeModelId", apiConfiguration.liteLlmModelId)
 				break
-			case "requesty":
-				await this.updateGlobalState("previousModeModelId", apiConfiguration.requestyModelId)
-				break
 		}
 
 		// Restore the model used in previous mode
@@ -1050,11 +1012,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			await this.updateGlobalState("thinkingBudgetTokens", newThinkingBudgetTokens)
 			switch (newApiProvider) {
 				case "anthropic":
-				case "bedrock":
-				case "vertex":
-				case "asksage":
-					await this.updateGlobalState("apiModelId", newModelId)
-					break
 				case "openrouter":
 					await this.updateGlobalState("openRouterModelId", newModelId)
 					await this.updateGlobalState("openRouterModelInfo", newModelInfo)
@@ -1074,9 +1031,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 					break
 				case "litellm":
 					await this.updateGlobalState("liteLlmModelId", newModelId)
-					break
-				case "requesty":
-					await this.updateGlobalState("requestyModelId", newModelId)
 					break
 			}
 
@@ -1870,11 +1824,8 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			awsSessionToken,
 			awsRegion,
 			awsUseCrossRegionInference,
-			awsBedrockUsePromptCache,
 			awsProfile,
 			awsUseProfile,
-			vertexProjectId,
-			vertexRegion,
 			openAiBaseUrl,
 			openAiApiKey,
 			openAiModelId,
@@ -1887,10 +1838,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			anthropicBaseUrl,
 			openAiNativeApiKey,
 			deepSeekApiKey,
-			requestyApiKey,
-			requestyModelId,
-			togetherApiKey,
-			togetherModelId,
 			qwenApiKey,
 			swaiApiKey,
 			mistralApiKey,
@@ -1915,9 +1862,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			qwenApiLine,
 			liteLlmApiKey,
 			telemetrySetting,
-			asksageApiKey,
-			asksageApiUrl,
-			xaiApiKey,
 			thinkingBudgetTokens,
 		] = await Promise.all([
 			this.getGlobalState("apiProvider") as Promise<ApiProvider | undefined>,
@@ -1929,11 +1873,8 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			this.getSecret("awsSessionToken") as Promise<string | undefined>,
 			this.getGlobalState("awsRegion") as Promise<string | undefined>,
 			this.getGlobalState("awsUseCrossRegionInference") as Promise<boolean | undefined>,
-			this.getGlobalState("awsBedrockUsePromptCache") as Promise<boolean | undefined>,
 			this.getGlobalState("awsProfile") as Promise<string | undefined>,
 			this.getGlobalState("awsUseProfile") as Promise<boolean | undefined>,
-			this.getGlobalState("vertexProjectId") as Promise<string | undefined>,
-			this.getGlobalState("vertexRegion") as Promise<string | undefined>,
 			this.getGlobalState("openAiBaseUrl") as Promise<string | undefined>,
 			this.getSecret("openAiApiKey") as Promise<string | undefined>,
 			this.getGlobalState("openAiModelId") as Promise<string | undefined>,
@@ -1946,10 +1887,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			this.getGlobalState("anthropicBaseUrl") as Promise<string | undefined>,
 			this.getSecret("openAiNativeApiKey") as Promise<string | undefined>,
 			this.getSecret("deepSeekApiKey") as Promise<string | undefined>,
-			this.getSecret("requestyApiKey") as Promise<string | undefined>,
-			this.getGlobalState("requestyModelId") as Promise<string | undefined>,
-			this.getSecret("togetherApiKey") as Promise<string | undefined>,
-			this.getGlobalState("togetherModelId") as Promise<string | undefined>,
 			this.getSecret("qwenApiKey") as Promise<string | undefined>,
 			this.getSecret("swaiApiKey") as Promise<string | undefined>,
 			this.getSecret("mistralApiKey") as Promise<string | undefined>,
@@ -1974,9 +1911,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			this.getGlobalState("qwenApiLine") as Promise<string | undefined>,
 			this.getSecret("liteLlmApiKey") as Promise<string | undefined>,
 			this.getGlobalState("telemetrySetting") as Promise<TelemetrySetting | undefined>,
-			this.getSecret("asksageApiKey") as Promise<string | undefined>,
-			this.getGlobalState("asksageApiUrl") as Promise<string | undefined>,
-			this.getSecret("xaiApiKey") as Promise<string | undefined>,
 			this.getGlobalState("thinkingBudgetTokens") as Promise<number | undefined>,
 		])
 
@@ -1985,7 +1919,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			apiProvider = storedApiProvider
 		} else {
 			// Either new user or legacy user that doesn't have the apiProvider stored in state
-			// (If they're using OpenRouter or Bedrock, then apiProvider state will exist)
 			if (apiKey) {
 				apiProvider = "anthropic"
 			} else {
@@ -2011,11 +1944,8 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 				awsSessionToken,
 				awsRegion,
 				awsUseCrossRegionInference,
-				awsBedrockUsePromptCache,
 				awsProfile,
 				awsUseProfile,
-				vertexProjectId,
-				vertexRegion,
 				openAiBaseUrl,
 				openAiApiKey,
 				openAiModelId,
@@ -2028,10 +1958,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 				anthropicBaseUrl,
 				openAiNativeApiKey,
 				deepSeekApiKey,
-				requestyApiKey,
-				requestyModelId,
-				togetherApiKey,
-				togetherModelId,
 				qwenApiKey,
 				qwenApiLine,
 				swaiApiKey,
@@ -2045,9 +1971,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 				liteLlmBaseUrl,
 				liteLlmModelId,
 				liteLlmApiKey,
-				asksageApiKey,
-				asksageApiUrl,
-				xaiApiKey,
 			},
 			lastShownAnnouncementId,
 			customInstructions,
@@ -2185,15 +2108,11 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			"openAiApiKey",
 			"openAiNativeApiKey",
 			"deepSeekApiKey",
-			"requestyApiKey",
-			"togetherApiKey",
 			"qwenApiKey",
 			"swaiApiKey",
 			"mistralApiKey",
 			"liteLlmApiKey",
 			"authToken",
-			"asksageApiKey",
-			"xaiApiKey",
 		]
 		for (const key of secretKeys) {
 			await this.storeSecret(key, undefined)

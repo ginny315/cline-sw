@@ -1,22 +1,16 @@
 export type ApiProvider =
 	| "anthropic"
 	| "openrouter"
-	| "bedrock"
-	| "vertex"
 	| "openai"
 	| "ollama"
 	| "lmstudio"
 	| "openai-native"
-	| "requesty"
-	| "together"
 	| "deepseek"
 	| "qwen"
 	| "swai"
 	| "mistral"
 	| "vscode-lm"
 	| "litellm"
-	| "asksage"
-	| "xai"
 
 export interface ApiHandlerOptions {
 	apiModelId?: string
@@ -33,11 +27,8 @@ export interface ApiHandlerOptions {
 	awsSessionToken?: string
 	awsRegion?: string
 	awsUseCrossRegionInference?: boolean
-	awsBedrockUsePromptCache?: boolean
 	awsUseProfile?: boolean
 	awsProfile?: string
-	vertexProjectId?: string
-	vertexRegion?: string
 	openAiBaseUrl?: string
 	openAiApiKey?: string
 	openAiModelId?: string
@@ -49,10 +40,6 @@ export interface ApiHandlerOptions {
 	lmStudioBaseUrl?: string
 	openAiNativeApiKey?: string
 	deepSeekApiKey?: string
-	requestyApiKey?: string
-	requestyModelId?: string
-	togetherApiKey?: string
-	togetherModelId?: string
 	qwenApiKey?: string
 	swaiApiKey?: string
 	mistralApiKey?: string
@@ -60,9 +47,6 @@ export interface ApiHandlerOptions {
 	vsCodeLmModelSelector?: any
 	o3MiniReasoningEffort?: string
 	qwenApiLine?: string
-	asksageApiUrl?: string
-	asksageApiKey?: string
-	xaiApiKey?: string
 	thinkingBudgetTokens?: number
 }
 
@@ -144,77 +128,6 @@ export const anthropicModels = {
 	},
 } as const satisfies Record<string, ModelInfo> // as const assertion makes the object deeply readonly
 
-// AWS Bedrock
-// https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html
-export type BedrockModelId = keyof typeof bedrockModels
-export const bedrockDefaultModelId: BedrockModelId = "anthropic.claude-3-7-sonnet-20250219-v1:0"
-export const bedrockModels = {
-	"anthropic.claude-3-7-sonnet-20250219-v1:0": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsComputerUse: true,
-		supportsPromptCache: true,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-		cacheWritesPrice: 3.75,
-		cacheReadsPrice: 0.3,
-	},
-	"anthropic.claude-3-5-sonnet-20241022-v2:0": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsComputerUse: true,
-		supportsPromptCache: true,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-		cacheWritesPrice: 3.75,
-		cacheReadsPrice: 0.3,
-	},
-	"anthropic.claude-3-5-haiku-20241022-v1:0": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 1.0,
-		outputPrice: 5.0,
-		cacheWritesPrice: 1.0,
-		cacheReadsPrice: 0.08,
-	},
-	"anthropic.claude-3-5-sonnet-20240620-v1:0": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-	},
-	"anthropic.claude-3-opus-20240229-v1:0": {
-		maxTokens: 4096,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 15.0,
-		outputPrice: 75.0,
-	},
-	"anthropic.claude-3-sonnet-20240229-v1:0": {
-		maxTokens: 4096,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-	},
-	"anthropic.claude-3-haiku-20240307-v1:0": {
-		maxTokens: 4096,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 0.25,
-		outputPrice: 1.25,
-	},
-} as const satisfies Record<string, ModelInfo>
-
 // OpenRouter
 // https://openrouter.ai/models?order=newest&supported_parameters=tools
 export const openRouterDefaultModelId = "anthropic/claude-3.7-sonnet" // will always exist in openRouterModels
@@ -231,73 +144,6 @@ export const openRouterDefaultModelInfo: ModelInfo = {
 	description:
 		"Claude 3.7 Sonnet is an advanced large language model with improved reasoning, coding, and problem-solving capabilities. It introduces a hybrid reasoning approach, allowing users to choose between rapid responses and extended, step-by-step processing for complex tasks. The model demonstrates notable improvements in coding, particularly in front-end development and full-stack updates, and excels in agentic workflows, where it can autonomously navigate multi-step processes. \n\nClaude 3.7 Sonnet maintains performance parity with its predecessor in standard mode while offering an extended reasoning mode for enhanced accuracy in math, coding, and instruction-following tasks.\n\nRead more at the [blog post here](https://www.anthropic.com/news/claude-3-7-sonnet)",
 }
-// Vertex AI
-// https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude
-// https://cloud.google.com/vertex-ai/generative-ai/pricing#partner-models
-export type VertexModelId = keyof typeof vertexModels
-export const vertexDefaultModelId: VertexModelId = "claude-3-7-sonnet@20250219"
-export const vertexModels = {
-	"claude-3-7-sonnet@20250219": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsComputerUse: true,
-		supportsPromptCache: true,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-	},
-	"claude-3-5-sonnet-v2@20241022": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsComputerUse: true,
-		supportsPromptCache: true,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-		cacheWritesPrice: 3.75,
-		cacheReadsPrice: 0.3,
-	},
-	"claude-3-5-sonnet@20240620": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: true,
-		inputPrice: 3.0,
-		outputPrice: 15.0,
-		cacheWritesPrice: 3.75,
-		cacheReadsPrice: 0.3,
-	},
-	"claude-3-5-haiku@20241022": {
-		maxTokens: 8192,
-		contextWindow: 200_000,
-		supportsImages: false,
-		supportsPromptCache: true,
-		inputPrice: 1.0,
-		outputPrice: 5.0,
-		cacheWritesPrice: 1.25,
-		cacheReadsPrice: 0.1,
-	},
-	"claude-3-opus@20240229": {
-		maxTokens: 4096,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: true,
-		inputPrice: 15.0,
-		outputPrice: 75.0,
-		cacheWritesPrice: 18.75,
-		cacheReadsPrice: 1.5,
-	},
-	"claude-3-haiku@20240307": {
-		maxTokens: 4096,
-		contextWindow: 200_000,
-		supportsImages: true,
-		supportsPromptCache: true,
-		inputPrice: 0.25,
-		outputPrice: 1.25,
-		cacheWritesPrice: 0.3,
-		cacheReadsPrice: 0.03,
-	},
-} as const satisfies Record<string, ModelInfo>
 
 export const openAiModelInfoSaneDefaults: ModelInfo = {
 	maxTokens: -1,
@@ -727,114 +573,3 @@ export const liteLlmModelInfoSaneDefaults: ModelInfo = {
 	inputPrice: 0,
 	outputPrice: 0,
 }
-
-// AskSage Models
-// https://docs.asksage.ai/
-export type AskSageModelId = keyof typeof askSageModels
-export const askSageDefaultModelId: AskSageModelId = "claude-35-sonnet"
-export const askSageDefaultURL: string = "https://api.asksage.ai/server"
-export const askSageModels = {
-	"gpt-4o": {
-		maxTokens: 4096,
-		contextWindow: 128000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0,
-		outputPrice: 0,
-	},
-	"gpt-4o-gov": {
-		maxTokens: 4096,
-		contextWindow: 128000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0,
-		outputPrice: 0,
-	},
-	"claude-35-sonnet": {
-		maxTokens: 8192,
-		contextWindow: 200000,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0,
-		outputPrice: 0,
-	},
-}
-
-// X AI
-// https://docs.x.ai/docs/api-reference
-export type XAIModelId = keyof typeof xaiModels
-export const xaiDefaultModelId: XAIModelId = "grok-2-latest"
-export const xaiModels = {
-	"grok-2-latest": {
-		maxTokens: 8192,
-		contextWindow: 131072,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 10.0,
-		description: "X AI's Grok-2 model - latest version with 131K context window",
-	},
-	"grok-2": {
-		maxTokens: 8192,
-		contextWindow: 131072,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 10.0,
-		description: "X AI's Grok-2 model with 131K context window",
-	},
-	"grok-2-1212": {
-		maxTokens: 8192,
-		contextWindow: 131072,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 10.0,
-		description: "X AI's Grok-2 model (version 1212) with 131K context window",
-	},
-	"grok-2-vision-latest": {
-		maxTokens: 8192,
-		contextWindow: 32768,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 10.0,
-		description: "X AI's Grok-2 Vision model - latest version with image support and 32K context window",
-	},
-	"grok-2-vision": {
-		maxTokens: 8192,
-		contextWindow: 32768,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 10.0,
-		description: "X AI's Grok-2 Vision model with image support and 32K context window",
-	},
-	"grok-2-vision-1212": {
-		maxTokens: 8192,
-		contextWindow: 32768,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 2.0,
-		outputPrice: 10.0,
-		description: "X AI's Grok-2 Vision model (version 1212) with image support and 32K context window",
-	},
-	"grok-vision-beta": {
-		maxTokens: 8192,
-		contextWindow: 8192,
-		supportsImages: true,
-		supportsPromptCache: false,
-		inputPrice: 5.0,
-		outputPrice: 15.0,
-		description: "X AI's Grok Vision Beta model with image support and 8K context window",
-	},
-	"grok-beta": {
-		maxTokens: 8192,
-		contextWindow: 131072,
-		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 5.0,
-		outputPrice: 15.0,
-		description: "X AI's Grok Beta model (legacy) with 131K context window",
-	},
-} as const satisfies Record<string, ModelInfo>

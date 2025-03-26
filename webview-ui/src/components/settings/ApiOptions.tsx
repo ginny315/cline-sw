@@ -18,8 +18,6 @@ import {
 	ApiConfiguration,
 	ApiProvider,
 	azureOpenAiDefaultApiVersion,
-	bedrockDefaultModelId,
-	bedrockModels,
 	deepSeekDefaultModelId,
 	deepSeekModels,
 	mistralDefaultModelId,
@@ -34,13 +32,6 @@ import {
 	qwenModels,
 	swaiDefaultModelId,
 	swaiModels,
-	vertexDefaultModelId,
-	vertexModels,
-	askSageModels,
-	askSageDefaultModelId,
-	askSageDefaultURL,
-	xaiDefaultModelId,
-	xaiModels,
 } from "../../../../src/shared/api"
 import { ExtensionMessage } from "../../../../src/shared/ExtensionMessage"
 import { useExtensionState } from "../../context/ExtensionStateContext"
@@ -452,7 +443,6 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage, is
 				selectedProvider !== "lmstudio" &&
 				selectedProvider !== "vscode-lm" &&
 				selectedProvider !== "litellm" &&
-				selectedProvider !== "requesty" &&
 				showModelOptions && (
 					<>
 						<DropdownContainer zIndex={DROPDOWN_Z_INDEX - 2} className="dropdown-container">
@@ -637,10 +627,6 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration): 
 	switch (provider) {
 		case "anthropic":
 			return getProviderData(anthropicModels, anthropicDefaultModelId)
-		case "bedrock":
-			return getProviderData(bedrockModels, bedrockDefaultModelId)
-		case "vertex":
-			return getProviderData(vertexModels, vertexDefaultModelId)
 		case "openai-native":
 			return getProviderData(openAiNativeModels, openAiNativeDefaultModelId)
 		case "deepseek":
@@ -651,8 +637,6 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration): 
 			return getProviderData(swaiModels, swaiDefaultModelId)
 		case "mistral":
 			return getProviderData(mistralModels, mistralDefaultModelId)
-		case "asksage":
-			return getProviderData(askSageModels, askSageDefaultModelId)
 		case "openrouter":
 			return {
 				selectedProvider: provider,
@@ -694,8 +678,6 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration): 
 				selectedModelId: apiConfiguration?.liteLlmModelId || "",
 				selectedModelInfo: openAiModelInfoSaneDefaults,
 			}
-		case "xai":
-			return getProviderData(xaiModels, xaiDefaultModelId)
 		default:
 			return getProviderData(anthropicModels, anthropicDefaultModelId)
 	}
