@@ -1,8 +1,8 @@
 {
-	"name": "claude-dev",
-	"displayName": "Cline",
-	"description": "Autonomous coding agent right in your IDE, capable of creating/editing files, running commands, using the browser, and more with your permission every step of the way.",
-	"version": "3.5.1",
+	"name": "swai",
+	"displayName": "SWAI",
+	"description": "Autonomous coding agent right in your IDE.",
+	"version": "1.0.0",
 	"icon": "assets/icons/icon.png",
 	"galleryBanner": {
 		"color": "#617A91",
@@ -12,15 +12,15 @@
 		"vscode": "^1.84.0"
 	},
 	"author": {
-		"name": "Cline Bot Inc."
+		"name": "ginny"
 	},
 	"license": "Apache-2.0",
-	"publisher": "saoudrizwan",
+	"publisher": "ginny",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/cline/cline"
+		"url": "https://github.com/ginny315/cline-sw"
 	},
-	"homepage": "https://cline.bot",
+	"homepage": "http://ai.thuwaytec.com/",
 	"categories": [
 		"AI",
 		"Chat",
@@ -30,18 +30,9 @@
 		"Testing"
 	],
 	"keywords": [
-		"cline",
-		"claude",
-		"dev",
-		"mcp",
-		"openrouter",
 		"coding",
 		"agent",
-		"autonomous",
-		"chatgpt",
-		"sonnet",
-		"ai",
-		"llama"
+		"ai"
 	],
 	"activationEvents": [],
 	"main": "./dist/extension.js",
@@ -50,7 +41,7 @@
 			"activitybar": [
 				{
 					"id": "claude-dev-ActivityBar",
-					"title": "Cline",
+					"title": "SWAI",
 					"icon": "assets/icons/icon.svg"
 				}
 			]
@@ -126,7 +117,7 @@
 			]
 		},
 		"configuration": {
-			"title": "Cline",
+			"title": "SWAI",
 			"properties": {
 				"cline.vsCodeLmModelSelector": {
 					"type": "object",
@@ -220,7 +211,7 @@
 		"compile": "npm run check-types && npm run lint && node esbuild.js",
 		"watch": "npm-run-all -p watch:*",
 		"watch:esbuild": "node esbuild.js --watch",
-		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+		"watch:tsc": "tsc --noEmit --watc--project tsconfig.json",
 		"package": "npm run build:webview && npm run check-types && npm run lint && node esbuild.js --production",
 		"compile-tests": "tsc -p ./tsconfig.test.json --outDir out",
 		"watch-tests": "tsc -p . -w --outDir out",
