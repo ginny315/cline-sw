@@ -22,8 +22,6 @@ import {
 	bedrockModels,
 	deepSeekDefaultModelId,
 	deepSeekModels,
-	geminiDefaultModelId,
-	geminiModels,
 	mistralDefaultModelId,
 	mistralModels,
 	ModelInfo,
@@ -515,7 +513,6 @@ export const ModelInfoView = ({
 	setIsDescriptionExpanded: (isExpanded: boolean) => void
 	isPopup?: boolean
 }) => {
-	const isGemini = Object.keys(geminiModels).includes(selectedModelId)
 
 	const infoItems = [
 		modelInfo.description && (
@@ -539,14 +536,6 @@ export const ModelInfoView = ({
 			supportsLabel="Supports computer use"
 			doesNotSupportLabel="Does not support computer use"
 		/>,
-		!isGemini && (
-			<ModelInfoSupportsItem
-				key="supportsPromptCache"
-				isSupported={modelInfo.supportsPromptCache}
-				supportsLabel="Supports prompt caching"
-				doesNotSupportLabel="Does not support prompt caching"
-			/>
-		),
 		modelInfo.maxTokens !== undefined && modelInfo.maxTokens > 0 && (
 			<span key="maxTokens">
 				<span style={{ fontWeight: 500 }}>Max output:</span> {modelInfo.maxTokens?.toLocaleString()} tokens
@@ -572,15 +561,6 @@ export const ModelInfoView = ({
 		modelInfo.outputPrice !== undefined && modelInfo.outputPrice > 0 && (
 			<span key="outputPrice">
 				<span style={{ fontWeight: 500 }}>Output price:</span> {formatPrice(modelInfo.outputPrice)}/million tokens
-			</span>
-		),
-		isGemini && (
-			<span key="geminiInfo" style={{ fontStyle: "italic" }}>
-				* Free up to {selectedModelId && selectedModelId.includes("flash") ? "15" : "2"} requests per minute. After that,
-				billing depends on prompt size.{" "}
-				<VSCodeLink href="https://ai.google.dev/pricing" style={{ display: "inline", fontSize: "inherit" }}>
-					For more info, see pricing details.
-				</VSCodeLink>
 			</span>
 		),
 	].filter(Boolean)
@@ -661,8 +641,6 @@ export function normalizeApiConfiguration(apiConfiguration?: ApiConfiguration): 
 			return getProviderData(bedrockModels, bedrockDefaultModelId)
 		case "vertex":
 			return getProviderData(vertexModels, vertexDefaultModelId)
-		case "gemini":
-			return getProviderData(geminiModels, geminiDefaultModelId)
 		case "openai-native":
 			return getProviderData(openAiNativeModels, openAiNativeDefaultModelId)
 		case "deepseek":

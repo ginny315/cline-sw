@@ -49,7 +49,6 @@ type SecretKey =
 	| "awsSecretKey"
 	| "awsSessionToken"
 	| "openAiApiKey"
-	| "geminiApiKey"
 	| "openAiNativeApiKey"
 	| "deepSeekApiKey"
 	| "requestyApiKey"
@@ -585,7 +584,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 								lmStudioModelId,
 								lmStudioBaseUrl,
 								anthropicBaseUrl,
-								geminiApiKey,
 								openAiNativeApiKey,
 								deepSeekApiKey,
 								requestyApiKey,
@@ -632,7 +630,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 							await this.updateGlobalState("lmStudioModelId", lmStudioModelId)
 							await this.updateGlobalState("lmStudioBaseUrl", lmStudioBaseUrl)
 							await this.updateGlobalState("anthropicBaseUrl", anthropicBaseUrl)
-							await this.storeSecret("geminiApiKey", geminiApiKey)
 							await this.storeSecret("openAiNativeApiKey", openAiNativeApiKey)
 							await this.storeSecret("deepSeekApiKey", deepSeekApiKey)
 							await this.storeSecret("requestyApiKey", requestyApiKey)
@@ -1019,7 +1016,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			case "anthropic":
 			case "bedrock":
 			case "vertex":
-			case "gemini":
 			case "asksage":
 				await this.updateGlobalState("previousModeModelId", apiConfiguration.apiModelId)
 				break
@@ -1056,7 +1052,6 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 				case "anthropic":
 				case "bedrock":
 				case "vertex":
-				case "gemini":
 				case "asksage":
 					await this.updateGlobalState("apiModelId", newModelId)
 					break
@@ -1890,7 +1885,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			lmStudioModelId,
 			lmStudioBaseUrl,
 			anthropicBaseUrl,
-			geminiApiKey,
 			openAiNativeApiKey,
 			deepSeekApiKey,
 			requestyApiKey,
@@ -1950,7 +1944,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			this.getGlobalState("lmStudioModelId") as Promise<string | undefined>,
 			this.getGlobalState("lmStudioBaseUrl") as Promise<string | undefined>,
 			this.getGlobalState("anthropicBaseUrl") as Promise<string | undefined>,
-			this.getSecret("geminiApiKey") as Promise<string | undefined>,
 			this.getSecret("openAiNativeApiKey") as Promise<string | undefined>,
 			this.getSecret("deepSeekApiKey") as Promise<string | undefined>,
 			this.getSecret("requestyApiKey") as Promise<string | undefined>,
@@ -2033,7 +2026,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 				lmStudioModelId,
 				lmStudioBaseUrl,
 				anthropicBaseUrl,
-				geminiApiKey,
 				openAiNativeApiKey,
 				deepSeekApiKey,
 				requestyApiKey,
@@ -2191,7 +2183,6 @@ Here is the project's README to help you get started:\n\n${mcpDetails.readmeCont
 			"awsSecretKey",
 			"awsSessionToken",
 			"openAiApiKey",
-			"geminiApiKey",
 			"openAiNativeApiKey",
 			"deepSeekApiKey",
 			"requestyApiKey",
