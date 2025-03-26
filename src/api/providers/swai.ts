@@ -1,12 +1,13 @@
 import { Anthropic } from "@anthropic-ai/sdk"
 import OpenAI from "openai"
 import { withRetry } from "../retry"
-import { ApiHandler } from ".."
 import { ApiHandlerOptions, SWAIModelId, ModelInfo, swaiDefaultModelId, swaiModels } from "../../shared/api"
+import { ApiHandler } from "../index"
 import { calculateApiCostOpenAI } from "../../utils/cost"
 import { convertToOpenAiMessages } from "../transform/openai-format"
 import { ApiStream } from "../transform/stream"
 import { convertToR1Format } from "../transform/r1-format"
+import { ChatCompletionReasoningEffort } from "openai/resources/chat/completions.mjs"
 
 export class SWAIHandler implements ApiHandler {
 	private options: ApiHandlerOptions
@@ -15,40 +16,10 @@ export class SWAIHandler implements ApiHandler {
 	constructor(options: ApiHandlerOptions) {
 		this.options = options
 		this.client = new OpenAI({
-			baseURL: "https://api.deepseek.com/v1",
+			baseURL: "http://111.20.209.158:30299/r1/v1/",
+			// baseURL: "http://api.thuwaytec.com/v1/",
 			apiKey: this.options.swaiApiKey,
 		})
-	}
-
-	private async *yieldUsage(info: ModelInfo, usage: OpenAI.Completions.CompletionUsage | undefined): ApiStream {
-		// Deepseek reports total input AND cache reads/writes,
-		// see context caching: https://api-docs.deepseek.com/guides/kv_cache)
-		// where the input tokens is the sum of the cache hits/misses, just like OpenAI.
-		// This affects:
-		// 1) context management truncation algorithm, and
-		// 2) cost calculation
-
-		// Deepseek usage includes extra fields.
-		// Safely cast the prompt token details section to the appropriate structure.
-		interface SWAIUsage extends OpenAI.CompletionUsage {
-			prompt_cache_hit_tokens?: number
-			prompt_cache_miss_tokens?: number
-		}
-		const deepUsage = usage as SWAIUsage
-
-		const inputTokens = deepUsage?.prompt_tokens || 0
-		const outputTokens = deepUsage?.completion_tokens || 0
-		const cacheReadTokens = deepUsage?.prompt_cache_hit_tokens || 0
-		const cacheWriteTokens = deepUsage?.prompt_cache_miss_tokens || 0
-		const totalCost = calculateApiCostOpenAI(info, inputTokens, outputTokens, cacheWriteTokens, cacheReadTokens)
-		yield {
-			type: "usage",
-			inputTokens: inputTokens,
-			outputTokens: outputTokens,
-			cacheWriteTokens: cacheWriteTokens,
-			cacheReadTokens: cacheReadTokens,
-			totalCost: totalCost,
-		}
 	}
 
 	@withRetry()
@@ -61,6 +32,8 @@ export class SWAIHandler implements ApiHandler {
 			{ role: "system", content: systemPrompt },
 			...convertToOpenAiMessages(messages),
 		]
+		let temperature: number | undefined = 0
+		let reasoningEffort: ChatCompletionReasoningEffort | undefined = undefined
 
 		if (isDeepseekReasoner) {
 			openAiMessages = convertToR1Format([{ role: "user", content: systemPrompt }, ...messages])
@@ -68,12 +41,14 @@ export class SWAIHandler implements ApiHandler {
 
 		const stream = await this.client.chat.completions.create({
 			model: model.id,
-			max_completion_tokens: model.info.maxTokens,
+			// max_completion_tokens: model.info.maxTokens,
 			messages: openAiMessages,
+			temperature: 1,
+			reasoning_effort: "medium",
 			stream: true,
 			stream_options: { include_usage: true },
 			// Only set temperature for non-reasoner models
-			...(model.id === "deepseek-ai/DeepSeek-R1" ? {} : { temperature: 0 }),
+			// ...(model.id === "deepseek-ai/DeepSeek-R1" ? {} : { temperature: 0 }),
 		})
 
 		for await (const chunk of stream) {
@@ -93,7 +68,11 @@ export class SWAIHandler implements ApiHandler {
 			}
 
 			if (chunk.usage) {
-				yield* this.yieldUsage(model.info, chunk.usage)
+				yield {
+					type: "usage",
+					inputTokens: chunk.usage.prompt_tokens || 0,
+					outputTokens: chunk.usage.completion_tokens || 0,
+				}
 			}
 		}
 	}
