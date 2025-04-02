@@ -17,7 +17,7 @@ export class SWAIHandler implements ApiHandler {
 		this.options = options
 		this.client = new OpenAI({
 			baseURL: "http://111.20.209.158:30299/r1/v1/",
-			// baseURL: "http://api.thuwaytec.com/v1/",
+			// baseURL: "http://api.thuwaytec.com/v1/chat/completions/v1/",
 			apiKey: this.options.swaiApiKey,
 		})
 	}
@@ -25,6 +25,7 @@ export class SWAIHandler implements ApiHandler {
 	@withRetry()
 	async *createMessage(systemPrompt: string, messages: Anthropic.Messages.MessageParam[]): ApiStream {
 		const model = this.getModel()
+		console.log('model', model)
 
 		const isDeepseekReasoner = model.id.includes("deepseek-ai/DeepSeek-R1")
 

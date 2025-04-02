@@ -41,6 +41,7 @@ export interface ApiHandlerOptions {
 	deepSeekApiKey?: string
 	qwenApiKey?: string
 	swaiApiKey?: string
+	swaiModel?: string
 	azureApiVersion?: string
 	vsCodeLmModelSelector?: any
 	o3MiniReasoningEffort?: string
@@ -463,20 +464,39 @@ export const qwenModels = {
 
 
 // SWAI
-// https://bailian.console.aliyun.com/
 export type SWAIModelId = keyof typeof swaiModels
-export const swaiDefaultModelId: SWAIModelId = "deepseek-ai/DeepSeek-R1"
+export const swaiDefaultModelId: SWAIModelId = "deepseek-r1"
 export const swaiModels = {
-	"deepseek-ai/DeepSeek-R1": {
+	"deepseek-r1": {
 		maxTokens: 8_192,
-		contextWindow: 131_072,
+		contextWindow: 64_000,
 		supportsImages: false,
-		supportsPromptCache: false,
-		inputPrice: 0.002,
-		outputPrice: 0.006,
-		cacheWritesPrice: 0.002,
-		cacheReadsPrice: 0.006,
+		supportsPromptCache: true,
+		inputPrice: 0.27,
+		outputPrice: 1.1,
+		cacheWritesPrice: 0.27,
+		cacheReadsPrice: 0.07,
 	},
+	"DeepSeek-V3": {
+		maxTokens: 8_192,
+		contextWindow: 64_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0.27,
+		outputPrice: 1.1,
+		cacheWritesPrice: 0.27,
+		cacheReadsPrice: 0.07,
+	},
+	"DeepSeek-R1-Distill-Llama-70B": {
+		maxTokens: 8_192,
+		contextWindow: 64_000,
+		supportsImages: false,
+		supportsPromptCache: true,
+		inputPrice: 0.27,
+		outputPrice: 1.1,
+		cacheWritesPrice: 0.27,
+		cacheReadsPrice: 0.07,
+	}
 } as const satisfies Record<string, ModelInfo>
 
 // LiteLLM

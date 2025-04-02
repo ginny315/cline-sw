@@ -448,7 +448,26 @@ const ApiOptions = ({ showModelOptions, apiErrorMessage, modelIdErrorMessage, is
 								<span style={{ fontWeight: 500 }}>Model</span>
 							</label>
 							{selectedProvider === "deepseek" && createDropdown(deepSeekModels)}
-							{selectedProvider === "swai" && createDropdown(swaiModels)}
+						</DropdownContainer>
+
+						<ModelInfoView
+							selectedModelId={selectedModelId}
+							modelInfo={selectedModelInfo}
+							isDescriptionExpanded={isDescriptionExpanded}
+							setIsDescriptionExpanded={setIsDescriptionExpanded}
+							isPopup={isPopup}
+						/>
+					</>
+				)}
+
+				{selectedProvider === "swai" &&
+				(
+					<>
+						<DropdownContainer zIndex={DROPDOWN_Z_INDEX - 2} className="dropdown-container">
+							<label htmlFor="model-id">
+								<span style={{ fontWeight: 500 }}>Model</span>
+							</label>
+							{createDropdown(swaiModels)}
 						</DropdownContainer>
 
 						<ModelInfoView
